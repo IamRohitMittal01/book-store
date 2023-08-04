@@ -1,6 +1,7 @@
 // server.ts
 import express, { Request, Response } from 'express';
 import { Connection } from 'mysql2/promise';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './database/connection';
 import booksRouter from './routes/books';
@@ -13,6 +14,7 @@ dotenv.config();
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+app.use(cors());
 
 // Simple route for testing
 app.get('/', (req: Request, res: Response) => {
@@ -27,8 +29,8 @@ app.use('/', booksRouter);
 connectToDatabase()
   .then((connection: Connection) => {
     app.locals.pool = connection; // Save the connection in app.locals.pool
-    app.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running at http://localhost:${process.env.PORT}`);
     });
   })
   .catch((err) => {
