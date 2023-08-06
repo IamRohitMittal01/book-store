@@ -9,23 +9,13 @@ import booksRouter from './routes/books';
 const app = express();
 const port = 3000;
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 app.use(cors());
 
-// Simple route for testing
-app.get('/', (req: Request, res: Response) => {
-  const greeting: string = 'Hello, TypeScript!';
-  res.send(greeting);
-});
-
-// Use the booksRouter for handling book APIs
 app.use('/', booksRouter);
 
-// Connect to the database
 connectToDatabase()
   .then((connection: Connection) => {
     app.locals.pool = connection; // Save the connection in app.locals.pool
